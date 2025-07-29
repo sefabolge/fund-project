@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Funds</title>
+    <link rel="stylesheet" href="{% static 'funds/css/styles.css' %}">
+</head>
+<body>
+    <h1>Upload Fund CSV</h1>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.csv_file.label_tag }}<br>
+            {{ form.csv_file }}
+            {% if form.csv_file.errors %}
+                <p class="error">{{ form.csv_file.errors }}</p>
+            {% endif %}
+        </div>
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>

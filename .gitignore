@@ -1,0 +1,40 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+
+# Django
+*.sqlite3
+*.log
+*.pot
+*.pyc
+db.sqlite3
+
+# Virtual env
+.venv/
+env/
+venv/
+ENV/
+
+# VS Code, PyCharm, macOS
+.vscode/
+.idea/
+.DS_Store
+
+# Migrations
+**/migrations/*.pyc
+**/migrations/__pycache__/
+**/migrations/*.sqlite3
+
+# Coverage / testing
+htmlcov/
+coverage.xml
+.pytest_cache/
+.cache/
+
+# Environments
+.env
+.env.local
+.env.example

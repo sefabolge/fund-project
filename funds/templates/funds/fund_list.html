@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fund List</title>
+    <link rel="stylesheet" href="{% static 'funds/css/styles.css' %}">
+
+</head>
+<body>
+    <h1>Funds</h1>
+
+    <div class="filter">
+        <form method="get">
+            <label for="strategy">Filter by Strategy:</label>
+            <select name="strategy" id="strategy" onchange="this.form.submit()">
+                <option value="">All Strategies</option>
+                {% for strategy in strategies %}
+                    <option value="{{ strategy }}" {% if strategy == selected_strategy %}selected{% endif %}>{{ strategy }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    <div class="actions">
+        <a href="{% url 'funds:fund_upload' %}" class="button">Upload New CSV</a>
+        <form method="post" action="{% url 'funds:clear_funds' %}">
+            {% csrf_token %}
+            <button type="submit" class="danger" onclick="return confirm('Are you sure you want to delete all funds? This cannot be undone.')">
+                Delete All Funds
+            </button>
+        </form>
+    </div>
+
+    {% if funds %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Strategy</th>
+                <th>AUM (USD)</th>
+                <th>Inception Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fund in funds %}
+            <tr>
+                <td>{{ fund.name }}</td>
+                <td>{{ fund.strategy }}</td>
+                <td>{% if fund.aum %}
+                    ${{ fund.aum|floatformat:2 }}
+                {% else %}
+                    —
+                {% endif %}</td>
+                <td>{% if fund.inception_date %}
+                    {{ fund.inception_date }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="summary">
+        Total Funds: {{ total_count }} <br>
+        Total AUM: ${{ total_aum|floatformat:2 }}
+    </div>
+    {% else %}
+        <p>No funds found.</p>
+    {% endif %}
+</body>
+</html>
